@@ -1,0 +1,23 @@
+# -------- Secrets --------
+.env
+.env.*
+*.env
+
+# -------- Python --------
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.venv/
+venv/
+loanenv/
+
+# -------- OS --------
+.DS_Store
+
+# -------- IDE --------
+.vscode/
+.idea/
+
+# -------- Logs --------
+*.log
