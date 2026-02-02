@@ -3,8 +3,8 @@
 An intelligent conversational AI agent for automated loan status inquiries, 
 built with state machine architecture and LLM-powered intent recognition.
 
-**[📺 Watch Demo Video](your-notion-or-youtube-link)** | 
-**[📖 Full Documentation](your-notion-link)**
+**[📺 Watch Demo Video](https://youtu.be/lT0n99LexpY)** | 
+**[📖 Full Documentation](https://industrious-ursinia-a33.notion.site/Loan-Status-Voice-Agent-2fbd805a3c2e80718153f72cb24b4622?pvs=143)**
 
 ---
 

@@ -85,7 +85,7 @@ def handle_turn(user_input: str, session: dict):
         return (
             f"Hello! I can help you check your loan status. "
             f"I see you're calling from {formatted_number}. "
-            f"After the beep, is this the number associated with your loan application? Say yes or no.",
+            f"Is this the number associated with your loan application? Say yes or no.",
             session
         )
 
