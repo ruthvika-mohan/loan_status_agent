@@ -13,22 +13,28 @@
   },
 
   "ask_different_number": {
-    "prompt": "No problem. Please enter the phone number associated with your loan application.",
+    "prompt": "No problem. Please say your 10-digit phone number clearly. You can say it all at once or digit by digit.",
+    "action": "get_keypad_input",
+    "on_success": "verify_phone_input",
+    "on_failure": "ask_different_number"
+  },
+
+  "verify_phone_input": {
     "action": "verify_phone",
     "on_success": "status_response",
     "on_failure": "not_found"
   },
 
   "not_found_caller_id": {
-    "prompt": "I couldn't find an application with that number. Would you like to try a different number or speak with an agent?",
+    "prompt": "I couldn't find an application with that number. Would you like to try a different number? Say yes to enter a new number, or say agent to speak with someone.",
     "allowed_actions": {
-      "retry": "ask_different_number",
+      "yes": "ask_different_number",
       "agent": "handoff"
     }
   },
 
   "status_response": {
-    "prompt": "Your loan application is currently {{status}}. Would you like an SMS update?",
+    "prompt": "Your loan application is currently {{status}}. Would you like an SMS update? Say yes or no.",
     "allowed_actions": {
       "yes": "send_sms",
       "no": "llm_goodbye"
@@ -36,20 +42,20 @@
   },
 
   "send_sms": {
-    "prompt": "Okay, I've sent an SMS with your loan status.",
+    "prompt": "Perfect. I've sent an SMS with your loan status details.",
     "action": "llm_goodbye_after_sms"
   },
 
   "not_found": {
-    "prompt": "I couldn't find your application with that number. You can say 'retry' to try another number, or 'agent' to speak with someone.",
+    "prompt": "I couldn't find an application with that number. Would you like to try again? Say yes to enter another number, or say agent to speak with someone.",
     "allowed_actions": {
-      "retry": "ask_different_number",
+      "yes": "ask_different_number",
       "agent": "handoff"
     }
   },
 
   "handoff": {
-    "prompt": "Please hold while I transfer you to an agent.",
+    "prompt": "One moment please, I'm transferring you to an agent now.",
     "action": "transfer_to_agent"
   },
 

@@ -79,12 +79,13 @@ def handle_turn(user_input: str, session: dict):
     # On first interaction, show greeting with caller ID confirmation
     if state == "start" and not session.get("greeted"):
         session["greeted"] = True
+        session["last_prompted_state"] = "start"  # Mark as already prompted
         caller_id = session["caller_id"]
         formatted_number = f"{caller_id[:3]}-{caller_id[3:6]}-{caller_id[6:]}"
         return (
             f"Hello! I can help you check your loan status. "
             f"I see you're calling from {formatted_number}. "
-            f"Is this the number associated with your loan application?",
+            f"After the beep, is this the number associated with your loan application? Say yes or no.",
             session
         )
 
@@ -96,19 +97,11 @@ def handle_turn(user_input: str, session: dict):
 
     # -------- VERIFY PHONE NUMBER --------
     if node.get("action") == "verify_phone":
-        # INPUT EXPECTED: phone number (digits)
-
-        # If no input yet (transitioning from start), wait for input
-        if not user_input.strip():
-            return render_prompt(node, session), session
-
-        # Validate phone number
-        if not user_input.isdigit() or len(user_input) < 8:
-            # Invalid input → intelligent LLM fallback
-            return llm_fallback(user_input, session), session
-
-        phone = user_input.strip()
-        session["phone"] = phone
+        # Use the phone number already collected via keypad
+        phone = session.get("phone")
+        
+        if not phone:
+            return "Please enter your phone number first.", session
 
         status = get_loan_status(phone)
         print("DEBUG | loan lookup:", repr(phone), "→", status)
@@ -122,6 +115,33 @@ def handle_turn(user_input: str, session: dict):
         print("DEBUG | transition after verify:", session["state"])
 
         # Continue to next state automatically
+        return handle_turn("", session)
+    
+    # -------- GET KEYPAD INPUT (simulated) --------
+    if node.get("action") == "get_keypad_input":
+        # In simulation, we'll use voice to get the number
+        # But present it as if they're using a keypad
+        
+        if not user_input.strip():
+            return render_prompt(node, session), session
+        
+        # Clean the input - extract only digits
+        cleaned_input = ''.join(filter(str.isdigit, user_input))
+        
+        # Validate - must be 10 digits
+        if len(cleaned_input) != 10:
+            return (
+                f"I received {len(cleaned_input)} digits. "
+                f"Please enter exactly 10 digits using your keypad, followed by the pound key.",
+                session
+            )
+        
+        # Confirm the number back to user
+        formatted = f"{cleaned_input[:3]}-{cleaned_input[3:6]}-{cleaned_input[6:]}"
+        session["phone"] = cleaned_input
+        session["state"] = node["on_success"]
+        
+        # Continue to verification
         return handle_turn("", session)
     
     # -------- VERIFY CALLER ID --------

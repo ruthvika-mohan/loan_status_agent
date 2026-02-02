@@ -1,9 +1,18 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from app.conversation import handle_turn
 
 app = FastAPI()
 
-# Session storage - resets when server restarts
+# Add CORS middleware to allow browser requests
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # In production, specify exact origins
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 sessions = {}
 
 @app.post("/chat")
@@ -12,7 +21,6 @@ def chat(payload: dict):
     message = payload.get("message", "")
 
     if session_id not in sessions:
-        # Initialize new session
         sessions[session_id] = {}
 
     try:
@@ -21,30 +29,34 @@ def chat(payload: dict):
 
         return {
             "response": response,
-            "ended": updated_session.get("ended", False),
-            "state": updated_session.get("state", "start")  # For debugging
+            "ended": updated_session.get("ended", False)
         }
 
     except Exception as e:
-        print(f"ERROR in chat handler: {e}")
-        # Return graceful error response
+        print(f"ERROR: {e}")
         return {
-            "response": "I apologize, something went wrong. Let's start fresh. Please share your phone number to check your loan status.",
-            "ended": False
+            "response": "Something went wrong. Please start a new conversation.",
+            "ended": True
         }
-
-
-@app.post("/reset")
-def reset_session(payload: dict):
-    """Endpoint to reset a specific session"""
-    session_id = payload.get("session_id")
-    if session_id in sessions:
-        sessions[session_id] = {}
-        return {"status": "reset", "message": "Session reset successfully"}
-    return {"status": "not_found", "message": "Session not found"}
 
 
 @app.get("/health")
 def health_check():
     """Health check endpoint"""
     return {"status": "healthy", "active_sessions": len(sessions)}
+
+
+@app.post("/reset")
+def reset_session(payload: dict):
+    """Reset a specific session"""
+    session_id = payload.get("session_id")
+    if session_id in sessions:
+        sessions[session_id] = {}
+        return {"status": "reset"}
+    return {"status": "not_found"}
+
+
+if __name__ == "__main__":
+    import uvicorn
+    print("🚀 Starting FastAPI server...")
+    uvicorn.run(app, host="0.0.0.0", port=8000)
