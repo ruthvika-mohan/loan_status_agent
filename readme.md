@@ -35,19 +35,36 @@ Response (TTS/Text)
 
 ## 🚀 Quick Start
 
-```bash
+### **Setup**
+
+```
 git clone [your-repo]
 cd loan-voice-agent
 pip install -r requirements.txt
+```
+
+Create a .env file using the template:
+
+```
+cp .env.example .env
+```
+
+Add your API keys to .env:
+
+```
+AZURE_OPENAI_ENDPOINT=...
+AZURE_OPENAI_API_KEY=...
+AZURE_OPENAI_CHAT_DEPLOYMENT=...
+```
+
+Start the backend:
+
+```
 uvicorn app.main:app --reload
 ```
-Open `voice_chat.html` in your browser
 
----
+Open voice_chat.html in your browser to start a voice conversation.
 
-## 📁 Project Structure
-
-[Folder structure]
 
 ---
 
@@ -62,8 +79,26 @@ Open `voice_chat.html` in your browser
 
 ## 📊 Technical Stack
 
-**Backend:** FastAPI, Python
-**AI:** OpenAI GPT-4, LangChain
-**Voice:** Azure Speech, WebRTC, Twilio
-**Frontend:** Streamlit, HTML/CSS/JS
+### Current Implementation
+
+**Backend**
+- FastAPI (Python)
+- Deterministic state-machine conversation engine
+
+**AI / LLM**
+- Azure OpenAI (GPT-4–class model)
+- Bounded intent routing (no free-form generation)
+
+**Voice Interface**
+- Browser-native Web Speech API (STT/TTS)
+
+**Frontend**
+- HTML / CSS / JavaScript
+- Streamlit for testing and development
+
+### Planned / Extensible
+
+- Twilio Voice (phone-based calls)
+- Azure Speech Services (multi-language STT/TTS)
+- Redis (distributed session management)
 
