@@ -35,7 +35,13 @@ Response (TTS/Text)
 
 ## 🚀 Quick Start
 
-[Installation instructions]
+```bash
+git clone [your-repo]
+cd loan-voice-agent
+pip install -r requirements.txt
+uvicorn app.main:app --reload
+```
+Open `voice_chat.html` in your browser
 
 ---
 
