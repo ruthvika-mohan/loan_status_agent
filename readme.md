@@ -3,12 +3,12 @@
 An intelligent conversational AI agent for automated loan status inquiries, 
 built with state machine architecture and LLM-powered intent recognition.
 
-**[📺 Watch Demo Video](https://youtu.be/lT0n99LexpY)** | 
-**[📖 Full Documentation](https://industrious-ursinia-a33.notion.site/Loan-Status-Voice-Agent-2fbd805a3c2e80718153f72cb24b4622?pvs=143)**
+**[ Watch Demo Video](https://youtu.be/lT0n99LexpY)** | 
+**[Full Documentation](https://industrious-ursinia-a33.notion.site/Loan-Status-Voice-Agent-2fbd805a3c2e80718153f72cb24b4622?pvs=143)**
 
 ---
 
-## ✨ Features
+##  Features
 
 - 🎯 Caller ID detection with confirmation
 - 💬 Natural language understanding via OpenAI GPT-4
@@ -38,7 +38,7 @@ Response (TTS/Text)
 ### **Setup**
 
 ```
-git clone [your-repo]
+git clone https://github.com/ruthvika-mohan/loan_status_agent/
 cd loan-voice-agent
 pip install -r requirements.txt
 ```
